@@ -1,12 +1,21 @@
 <script setup lang="ts">
+import { reactive } from "vue";
 import FooterTabbar from "@/components/FooterTabbar.vue";
+import TaskList from "@/components/list/TaskList.vue";
+
+const taskList = reactive([
+  {
+    id: 1,
+  },
+  {
+    id: 2,
+  },
+])
 </script>
 
 <template>
-  <h2>任务</h2>
+  <TaskList :task-list="taskList" />
   <FooterTabbar />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
