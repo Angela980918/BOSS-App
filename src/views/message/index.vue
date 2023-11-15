@@ -1,12 +1,21 @@
 <script setup lang="ts">
+import { reactive } from "vue";
 import FooterTabbar from "@/components/FooterTabbar.vue";
+import MessageList from "@/components/list/MessageList.vue";
+
+const messageList = reactive([
+  {
+    id: 1,
+  },
+  {
+    id: 2,
+  },
+]);
 </script>
 
 <template>
-  <h2>消息</h2>
+  <MessageList :message-list="messageList" />
   <FooterTabbar />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
