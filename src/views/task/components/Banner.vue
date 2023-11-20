@@ -35,15 +35,27 @@ if (store.bannerList.length <= 0) {
 
 <template>
   <van-swipe :autoplay="3000" lazy-render>
-    <van-swipe-item v-for="image in store.bannerList" :key="image">
-      <img :src="image" />
+    <van-swipe-item v-for="(item, index) in store.bannerList" :key="index">
+      <a :href="item.url" target="_blank" v-if="item.url">
+        <img :src="item.picture" />
+      </a>
+      <img v-else="item.url" :src="item.picture" />
     </van-swipe-item>
   </van-swipe>
 </template>
 
 <style scoped>
+:deep(.van-swipe__track) {
+  height: 7.47rem;
+}
+
+:deep(.van-swipe__indicators) {
+  display: none;
+}
+
 img {
   width: 100%;
   height: 7.47rem;
+  border-radius: 0.5rem;
 }
 </style>
