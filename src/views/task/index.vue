@@ -2,12 +2,14 @@
 import { reactive, provide } from "vue";
 import { useRouter } from 'vue-router';
 import { taskStore } from '@/store/task'
+import { taskAllList } from '@/api/task';
 import FooterTabbar from "@/components/FooterTabbar.vue";
 import TaskList from "@/components/list/TaskList.vue";
 import Banner from './components/Banner.vue'
 import Screen from './components/Screen.vue'
 import PositionType from './components/PositionType.vue'
 import CitySwitch from './components/CitySwitch.vue'
+import { showToast } from "vant";
 
 const store = taskStore()
 
@@ -26,6 +28,34 @@ const state = reactive({
   taskList: []
 })
 
+// 获取任务列表
+const getTaskAllList = async () => {
+  state.loading = true
+  if (state.pageNum == 1) state.taskList = []
+  const res = await taskAllList({
+    "position_name": state.positionValue,
+    "service_mode": state.serviceMode,
+    "task_cycle": state.taskCycle,
+    "pageNum": state.pageNum,
+    "pageSize": state.pageSize,
+    "city": store.cityValue,
+  })
+  console.log(res)
+  if (res) {
+    state.taskList = state.taskList.concat(res.records)
+    state.loading = false
+    if (state.taskList.length >= res.total) {
+      state.finished = true
+    } else {
+      state.finished = false
+    }
+  } else {
+    showToast(res.msg)
+  }
+}
+
+getTaskAllList()
+
 const taskList = reactive([
   {
     id: 1,
@@ -41,7 +71,7 @@ const gotoSearch = () => {
   console.log("搜索跳转")
 }
 
-// 关闭弹窗
+// 关闭定位弹窗
 const closeCitySwitch = (name: any) => {
   // console.log("name:", name)
   if (name) {
@@ -50,8 +80,28 @@ const closeCitySwitch = (name: any) => {
   state.citySwitchBool = false
 }
 
+// 关闭职位类型弹窗
+const closePositionType = (name: any) => {
+  if (name) {
+    state.positionValue = name
+  }
+  state.positionTypeBool = false
+}
+
+// 关闭筛选弹窗
+const closeScreen = (obj: any) => {
+  if (obj) {
+    state.serviceMode = obj.mode
+    state.taskCycle = obj.cycle
+  }
+  state.screenBool = false
+}
+
+
 provide('popup', {
-  closeCitySwitch
+  closeCitySwitch,
+  closePositionType,
+  closeScreen
 })
 </script>
 
@@ -78,14 +128,29 @@ provide('popup', {
     <!-- 任务标题 -->
     <div class="task-title">
       <h3>最新任务</h3>
-      <div class="task-positon-pop">职位类型<span></span></div>
-      <div class="task-screen-pop">筛选<span></span></div>
+      <div class="task-positon-pop" @click="state.positionTypeBool = true">{{ state.positionValue || '职位类型'
+      }}<span></span></div>
+      <div class="task-screen-pop" @click="state.screenBool = true">
+        {{ state.serviceMode || state.taskCycle ? state.serviceMode : '' }}
+        {{ state.serviceMode && state.taskCycle ? '-' : "" }}
+        {{ !state.serviceMode && !state.taskCycle ? '筛选' : "" }}
+        {{ state.serviceMode || state.taskCycle ? state.taskCycle : '' }}<span></span></div>
     </div>
     <TaskList :task-list="taskList" />
 
     <!-- 切换城市弹窗 -->
     <van-popup v-model:show="state.citySwitchBool" position="right" :style="{ width: '100%', height: '100%' }">
       <CitySwitch></CitySwitch>
+    </van-popup>
+
+    <!-- 职位类型弹窗 -->
+    <van-popup v-model:show="state.positionTypeBool" position="right" :style="{ width: '100%', height: '100%' }">
+      <PositionType></PositionType>
+    </van-popup>
+
+    <!-- 筛选弹窗 -->
+    <van-popup v-model:show="state.screenBool" position="right" :style="{ width: '100%', height: '100%' }">
+      <Screen></Screen>
     </van-popup>
   </div>
 
