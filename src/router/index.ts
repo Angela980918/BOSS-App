@@ -15,8 +15,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/login/privacyPolicy.vue"),
   },
   {
+    name: "task",
     path: "/task",
     component: () => import("@/views/task/index.vue"),
+    meta: {
+      keepAlive: true, // 需要被缓存
+    },
   },
   {
     path: "/task/search",
@@ -139,7 +143,8 @@ router.beforeEach((to, from, next) => {
     if (
       to.path === "/login" ||
       to.path === "/login/serviceAgree" ||
-      to.path === "/login/privacyPolicy"
+      to.path === "/login/privacyPolicy" ||
+      from.path === "/task"
     ) {
       next();
     } else {
