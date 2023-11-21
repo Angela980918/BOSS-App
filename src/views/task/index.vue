@@ -21,7 +21,7 @@ const state = reactive({
   positionValue: '',
   serviceMode: '',
   taskCycle: '',
-  pageNum: 0,
+  pageNum: 1,
   pageSize: 10,
   finished: false,
   loading: false,
@@ -56,14 +56,6 @@ const getTaskAllList = async () => {
 
 getTaskAllList()
 
-const taskList = reactive([
-  {
-    id: 1,
-  },
-  {
-    id: 2,
-  },
-])
 const router = useRouter()
 router
 // 搜索跳转
@@ -76,6 +68,7 @@ const closeCitySwitch = (name: any) => {
   // console.log("name:", name)
   if (name) {
     store.setCityValue(name)
+    onRefresh()
   }
   state.citySwitchBool = false
 }
@@ -84,6 +77,7 @@ const closeCitySwitch = (name: any) => {
 const closePositionType = (name: any) => {
   if (name) {
     state.positionValue = name
+    onRefresh()
   }
   state.positionTypeBool = false
 }
@@ -93,8 +87,20 @@ const closeScreen = (obj: any) => {
   if (obj) {
     state.serviceMode = obj.mode
     state.taskCycle = obj.cycle
+    onRefresh()
   }
   state.screenBool = false
+}
+
+// 加载更多
+const onLoad = () => {
+  state.pageNum++
+  getTaskAllList()
+}
+
+const onRefresh = () => {
+  state.pageNum = 1
+  getTaskAllList()
 }
 
 
@@ -108,9 +114,9 @@ provide('popup', {
 <template>
   <div class="task-page">
     <!-- 头部 -->
-    <div class="task-top" @click="state.citySwitchBool = true">
+    <div class="task-top">
       <!-- 城市切换 -->
-      <div class="task-top-city">
+      <div class="task-top-city" @click="state.citySwitchBool = true">
         <i></i>
         <strong>{{ store.cityValue }}</strong>
         <span></span>
@@ -136,7 +142,12 @@ provide('popup', {
         {{ !state.serviceMode && !state.taskCycle ? '筛选' : "" }}
         {{ state.serviceMode || state.taskCycle ? state.taskCycle : '' }}<span></span></div>
     </div>
-    <TaskList :task-list="taskList" />
+    <van-pull-refresh v-model="state.loading" @refresh="onRefresh">
+      <van-list v-model:loading="state.loading" :finished="state.finished" finished-text="没有更多了" @load="onLoad">
+        <TaskList :task-list="state.taskList" />
+        <div class="wy-no-data" v-if="!state.loading && state.taskList.length == 0">暂无数据</div>
+      </van-list>
+    </van-pull-refresh>
 
     <!-- 切换城市弹窗 -->
     <van-popup v-model:show="state.citySwitchBool" position="right" :style="{ width: '100%', height: '100%' }">
