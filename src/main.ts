@@ -19,6 +19,9 @@ import {
   List,
   PullRefresh,
   ActionBarIcon,
+  Tab, 
+  Tabs,
+  Loading
 } from "vant";
 import "./utils/rem";
 
@@ -36,6 +39,9 @@ app.use(SwipeItem);
 app.use(List);
 app.use(PullRefresh);
 app.use(ActionBarIcon);
+app.use(Tab);
+app.use(Tabs);
+app.use(Loading);
 app.use(Popup);
 app.use(store);
 app.use(router);
