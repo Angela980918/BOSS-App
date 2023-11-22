@@ -61,6 +61,9 @@ router
 // 搜索跳转
 const gotoSearch = () => {
   console.log("搜索跳转")
+  router.push({
+    path: '/task/search',
+  })
 }
 
 // 关闭定位弹窗
