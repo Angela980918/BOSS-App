@@ -9,6 +9,7 @@ export const taskStore = defineStore({
       bannerList: [], //轮播图
       positionList: [], //职位列表
       screenList: {}, // 筛选列表
+      hotSearchList: [], // 热门搜索
     };
   },
   actions: {
@@ -35,6 +36,11 @@ export const taskStore = defineStore({
     // 设置筛选列表
     setScreenList(data: any) {
       this.screenList = data;
+    },
+
+    // 设置热门搜索
+    setHotSearchList(data: any) {
+      this.hotSearchList = data;
     },
   },
 });
