@@ -4,6 +4,7 @@ import "./assets/css/style.css";
 import App from "./App.vue";
 import store from "./store";
 import router from "./router";
+import {directives} from './utils/common'
 import {
   Search,
   Button,
@@ -26,6 +27,7 @@ import {
 import "./utils/rem";
 
 const app = createApp(App);
+directives(app)
 app.use(Search);
 app.use(Button);
 app.use(Toast);
