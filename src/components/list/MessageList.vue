@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
 const router = useRouter()
-const gotoDetail = (id: any) => {
-  router.push('/message/talk/' + id)
+const gotoDetail = () => {
+  router.push('/message/systemList/')
 }
 
 // 接收参数
@@ -20,12 +20,13 @@ const props = defineProps({
 <template>
   <dl v-for="(item, index) in messageList" :key="index" @click="gotoDetail(item)">
     <dd>
-      <img src="@/assets/img/icon/icon-message.png">
-      <span></span>
+      <img v-if="item.receive_is_read" :src="item.receive_is_read">
+      <img v-else src="@/assets/img/icon/icon-message.png">
+      <span v-if="item.is_show"></span>
     </dd>
     <dt>
-      <h3>珠海联系人<span>5分钟前</span></h3>
-      <p>你好，人才招聘</p>
+      <h3>{{ item.things_type === 1 ? item.receive_id_name : item.title }}<span>{{ item.create_time }}</span></h3>
+      <p>{{ item.content }}</p>
     </dt>
   </dl>
 </template>
