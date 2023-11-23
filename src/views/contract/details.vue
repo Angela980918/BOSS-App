@@ -38,7 +38,7 @@ const putContractOperation = async (type: any) => {
     "is_contract_type": type,
     "contract_id": contractId
   })
-  if (res.errCode === 200) leftBack()
+  if (res.errCode === 200) { leftBack() }
   showToast(res.meg)
   state.loading = false
 }
