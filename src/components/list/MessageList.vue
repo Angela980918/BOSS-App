@@ -1,9 +1,6 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
 const router = useRouter()
-const gotoDetail = () => {
-  router.push('/message/systemList/')
-}
 
 // 接收参数
 const props = defineProps({
@@ -15,6 +12,34 @@ const props = defineProps({
     type: String
   }
 })
+
+// const gotoDetail = (item: any) => {
+//   console.log("item", item)
+//   if (props.type === 'talk') {
+//     router.push('/message/talk/')
+//   }
+//   if (props.type === 'system') {
+//     router.push('/message/systemList/' + item.is_informtype + '/' + item.id)
+//   }
+// }
+const gotoDetail = (item: any) => {
+  console.log("item", item)
+  if (props.type === 'system') {
+    router.push('/message/systemList')
+  }
+  if (props.type === 'talk' && item.things_type === 0) {
+    router.push('/message/talk/' + item.things_id + '/' + item.receive_id)
+  }
+  if (props.type === 'talk' && item.things_type === 1) {
+    router.push('/message/talent/' + item.things_id + '/' + item.send_id)
+  }
+  if (props.type === 'talent' && item.things_type === 0) {
+    router.push('/message/talk/' + item.things_id + '/' + item.send_id)
+  }
+  if (props.type === 'talent' && item.things_type === 1) {
+    router.push('/message/talent/' + item.things_id + '/' + item.receive_id)
+  }
+}
 </script>
 
 <template>
