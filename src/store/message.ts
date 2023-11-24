@@ -25,7 +25,7 @@ export const messageStore = defineStore({
       }
     },
 
-    // 获取聊天记录
+    // 获取聊天列表
     async getChatMessageList() {
       const res = await chatMessageList({});
       if (res) {
