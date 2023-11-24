@@ -22,13 +22,17 @@ import {
   ActionBarIcon,
   Tab, 
   Tabs,
-  Loading
+  Loading,
+  Field,
+  SwipeCell
 } from "vant";
 import "./utils/rem";
 
 const app = createApp(App);
 directives(app)
 app.use(Search);
+app.use(SwipeCell);
+app.use(Field);
 app.use(Button);
 app.use(Toast);
 app.use(NavBar);
