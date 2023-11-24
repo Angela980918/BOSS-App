@@ -15,7 +15,7 @@ store.getChatMessageList()
 
 <template>
   <MessageList :message-list="store.systemMessageList" type="system" />
-  <MessageList :message-list="store.messageList" />
+  <MessageList :message-list="store.messageList" type="talk" />
   <FooterTabbar />
 </template>
 
