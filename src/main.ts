@@ -4,7 +4,7 @@ import "./assets/css/style.css";
 import App from "./App.vue";
 import store from "./store";
 import router from "./router";
-import {directives} from './utils/common'
+import { directives } from "./utils/common";
 import {
   Search,
   Button,
@@ -20,16 +20,20 @@ import {
   List,
   PullRefresh,
   ActionBarIcon,
-  Tab, 
+  Tab,
   Tabs,
   Loading,
   Field,
-  SwipeCell
+  SwipeCell,
+  Uploader,
+  Form,
+  ActionSheet,
+  DatePicker,
 } from "vant";
 import "./utils/rem";
 
 const app = createApp(App);
-directives(app)
+directives(app);
 app.use(Search);
 app.use(SwipeCell);
 app.use(Field);
@@ -49,6 +53,10 @@ app.use(Tab);
 app.use(Tabs);
 app.use(Loading);
 app.use(Popup);
+app.use(Uploader);
+app.use(Form);
+app.use(ActionSheet);
+app.use(DatePicker);
 app.use(store);
 app.use(router);
 app.mount("#app");
