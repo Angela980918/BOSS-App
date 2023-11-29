@@ -29,6 +29,8 @@ import {
   Form,
   ActionSheet,
   DatePicker,
+  Area,
+  Picker,
 } from "vant";
 import "./utils/rem";
 
@@ -57,6 +59,8 @@ app.use(Uploader);
 app.use(Form);
 app.use(ActionSheet);
 app.use(DatePicker);
+app.use(Area);
+app.use(Picker);
 app.use(store);
 app.use(router);
 app.mount("#app");
