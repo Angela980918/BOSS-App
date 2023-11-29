@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-
+import { cityList } from "../api/task";
 export const taskStore = defineStore({
   id: "task",
   state: () => {
@@ -10,6 +10,7 @@ export const taskStore = defineStore({
       positionList: [], //职位列表
       screenList: {}, // 筛选列表
       hotSearchList: [], // 热门搜索
+      areaList: [], // 城市地区列表
     };
   },
   actions: {
@@ -41,6 +42,29 @@ export const taskStore = defineStore({
     // 设置热门搜索
     setHotSearchList(data: any) {
       this.hotSearchList = data;
+    },
+
+    // 获取城市地区列表
+    async getCityList() {
+      const res: any = await cityList({});
+      if (res) {
+        this.cityList = res;
+        let city: any = [];
+        for (var i = 0; i < res.length; i++) {
+          city.push({
+            text: res[i].name,
+            children: [],
+          });
+          if (res[i].children && res[i].children.length) {
+            for (var j = 0; j < res[i].children.length; j++) {
+              city[i].children.push({
+                text: res[i].children[j].name,
+              });
+            }
+          }
+        }
+        this.areaList = city;
+      }
     },
   },
 });
