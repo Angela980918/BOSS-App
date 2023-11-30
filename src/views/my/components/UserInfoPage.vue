@@ -6,6 +6,8 @@ import { myStore } from '@/store/my'
 import { common } from '@/utils/common'
 const { closeChange } = inject('popup') as any
 import { uploadImage, userModify } from '@/api/my';
+import { areaList } from '@vant/area-data';
+import { showToast } from 'vant';
 const store = myStore()
 const tsStore = taskStore()
 if (!tsStore.areaList.length) {
@@ -24,6 +26,9 @@ const state = reactive({
   workTime: '',
   city: '',
   area: '',
+  // cityNumber: "440303", // 地区码
+  // cityNumber: ['440000', '440300', '440303'], // 地区码
+  cityNumber: "440703", // 地区码
   minDate: new Date(1999, 0, 1),
   maxDate: new Date()
 })
@@ -103,28 +108,71 @@ const workTimeConfirm = (value: any) => {
 //  所在城市
 const cityConfirm = (value: any) => {
   const position = value.selectedOptions
-  state.city = position[0].text
-  state.area = position[1].text
+  state.city = position[0].text + position[1].text
+  state.area = position[2].text
+  console.log(value)
+  state.cityNumber = value.selectedValues[2]
+  // state.cityNumber = value.selectedValues
   state.showCity = false
 }
 
 // 提交表单
-const onSubmit = (values: any) => {
-  console.log('提交', values)
+const setUserModify = async () => {
+  if (state.fileList.length === 0) {
+    showToast('请上传头像')
+    return
+  }
+  if (!state.userName) {
+    showToast('请填写姓名')
+    return
+  }
+  if (!state.sex) {
+    showToast('请选择性别')
+    return
+  }
+  if (!state.birthday) {
+    showToast('请选择出生年月')
+    return
+  }
+  if (!state.workTime) {
+    showToast('请选择参加工作时间')
+    return
+  }
+  if (!state.city) {
+    showToast('请选择城市')
+    return
+  }
+  state.loading = true
+  const res = await userModify({
+    "user_name": state.userName,
+    "sex": state.sex === '男' ? 1 : state.sex === '女' ? 2 : '',
+    "birthday": state.birthday,
+    "work_time": state.workTime,
+    "city": state.city,
+    "area": state.area,
+    "it_head": state.fileList[0].url,
+    "type": 1
+  })
+  if (res) {
+    store.getUserInfo()
+  }
+  showToast(res.msg)
+  state.loading = false
 }
 </script>
 
 <template>
   <van-nav-bar title="个人信息" left-arrow @click-left="closeChange" />
   <div class="user-page">
-    <van-form @submit="onSubmit">
+    <van-form @submit="setUserModify">
       <div class="user-pic">
-        <van-uploader  v-model="state.fileList" accept=".jpg,.png" :after-read="afterRead" :before-delete="deleteFile" max-count="1" />
+        <van-uploader v-model="state.fileList" accept=".jpg,.png" :after-read="afterRead" :before-delete="deleteFile"
+          max-count="1" />
       </div>
 
       <div class="user-item">
         <h5>姓名</h5>
-        <van-field label="" v-model="state.userName" placeholder="请输入您的姓名" />
+        <van-field v-model="state.userName" placeholder="请输入您的姓名" />
       </div>
 
       <div class="user-item">
@@ -156,7 +204,7 @@ const onSubmit = (values: any) => {
         <h5>所在城市</h5>
         <van-field v-model="state.city" placeholder="请选择您的城市" @click="state.showCity = true" readonly is-link />
         <van-action-sheet v-model:show="state.showCity">
-          <van-picker title="选择所在城市" :columns="tsStore.areaList" @confirm="cityConfirm" :columns-num="2"
+          <van-area  title="选择所在城市" :area-list="areaList" v-model="state.cityNumber" @confirm="cityConfirm"
             @cancel="state.showCity = false" />
         </van-action-sheet>
       </div>
