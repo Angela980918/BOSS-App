@@ -10,8 +10,9 @@ const getPolicyChange = async () => {
   const res: any = await getPolicy({
     id: 17
   })
+  // console.log(res)
   if (res) {
-    state.htmlText = res.records[6].content
+    state.htmlText = res.records[0].content
   } else {
     showToast({
       message: res.msg
