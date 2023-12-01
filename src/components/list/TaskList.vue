@@ -2,6 +2,7 @@
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const gotoDetail = (id: any) => {
+  console.log("id", id)
   router.push('/task/details/' + id)
 }
 
