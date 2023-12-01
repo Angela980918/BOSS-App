@@ -17,10 +17,9 @@ const routes: Array<RouteRecordRaw> = [
   {
     name: "task",
     path: "/task",
+    props: true,
     component: () => import("@/views/task/index.vue"),
-    meta: {
-      keepAlive: true, // 需要被缓存
-    },
+    meta: { keepAlive: true }, // 设置 keep-alive
   },
   {
     path: "/task/search",
