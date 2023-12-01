@@ -16,10 +16,13 @@ const state = reactive({
 
 // 根据任务ID获取当前任务详情
 const getTaskDetail = async () => {
+  console.log("getTaskDetail")
   state.loading = true
   const res: any = await taskDetails({
     task_id: taskId
   })
+
+  console.log(res)
 
   if (res) {
     state.item = res.records[0]
