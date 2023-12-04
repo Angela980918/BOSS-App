@@ -18,7 +18,7 @@ const leftBack = () => {
 const getCollectList = async () => {
   state.loading = true
   const res: any = await collectList()
-  console.log(res)
+  // console.log(res)
   if (res) {
     state.list = res.data
   } else {
@@ -26,6 +26,7 @@ const getCollectList = async () => {
   }
   state.loading = false
 }
+getCollectList()
 </script>
 
 <template>
