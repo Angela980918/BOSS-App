@@ -2,6 +2,7 @@
 import { reactive } from 'vue';
 import { contractList } from '@/api/contract'
 import ContractList from '@/components/list/ContractList.vue'
+import { showToast } from 'vant';
 
 const tabs = [
   {
