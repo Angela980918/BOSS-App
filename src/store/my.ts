@@ -7,7 +7,7 @@ export const myStore = defineStore({
       userInfo: <any>{}, // 用户基本信息
       companyList: [],
       projectList: [],
-      resumeInfo: {},
+      resumeInfo: {}, // 简历信息
       experience: [],
       highestEducation: <any>[],
       jobsType: [],
@@ -22,6 +22,17 @@ export const myStore = defineStore({
       const res = await userInfo();
       if (res) {
         this.userInfo = res;
+      }
+    },
+
+    // 获取简历信息
+    async getResumeDetail() {
+      if (Object.keys({}).length === 0) await this.getUserInfo();
+      const res = await resumeDetail(this.userInfo);
+      if (res && res.data[0]) {
+        this.companyList = res.data[0].companyList;
+        this.projectList = res.data[0].projectList;
+        this.resumeInfo = res.data[0].info[0];
       }
     },
   },
