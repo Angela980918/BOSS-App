@@ -31,6 +31,7 @@ import {
   DatePicker,
   Area,
   Picker,
+  CheckboxGroup,
 } from "vant";
 import "./utils/rem";
 
@@ -61,6 +62,7 @@ app.use(ActionSheet);
 app.use(DatePicker);
 app.use(Area);
 app.use(Picker);
+app.use(CheckboxGroup);
 app.use(store);
 app.use(router);
 app.mount("#app");
