@@ -10,7 +10,10 @@ import EducationalExperience from './components/EducationalExperience.vue'
 import { myStore } from '@/store/my'
 
 const store = myStore()
+// 简历信息
 store.getResumeDetail()
+// 简历数据字典
+store.getResumeDict()
 const leftBack = () => {
   history.back();
 }
