@@ -14,6 +14,7 @@ const store = myStore()
 store.getResumeDetail()
 // 简历数据字典
 store.getResumeDict()
+
 const leftBack = () => {
   history.back();
 }
