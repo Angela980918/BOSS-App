@@ -18,8 +18,13 @@ const state = reactive({
   serviceValue: '',
   priceValue: ''
 })
+if (Object.keys(store.resumeInfo).length !== 0) {
+  state.positionValue = store.resumeInfo.position_name
+  state.serviceValue = store.resumeInfo.service_mode
+  state.priceValue = store.resumeInfo.service_price
+}
 
-const priceSelect = (value:any) => {
+const priceSelect = (value: any) => {
   if (value) state.priceValue = value.name
 }
 // 关闭职位类型弹窗
@@ -30,8 +35,10 @@ const closePositionType = (name: any) => {
 
 // 关闭服务类型弹窗
 const closeServiceType = (name: any) => {
-  let formatName = name.join(',')
-  if (name) state.serviceValue = formatName
+  if (name) {
+    let formatName = name.join(',')
+    state.serviceValue = formatName
+  }
   state.showServiceType = false
 }
 
@@ -99,7 +106,7 @@ provide('popup', {
     <!-- 服务类型弹窗 -->
     <van-popup v-model:show="state.showServiceType" :multple="true" position="right"
       :style="{ width: '100%', height: '100%' }">
-      <ServiceTypePopup></ServiceTypePopup>
+      <ServiceTypePopup :service-item="state.serviceValue"></ServiceTypePopup>
     </van-popup>
   </div>
 </template>
