@@ -12,7 +12,7 @@ export const myStore = defineStore({
       highestEducation: <any>[],
       jobsType: [],
       salaryScope: <any>[],
-      sysSkillList: [],
+      sysSkillList: [], // 技能标签
     };
   },
 
@@ -59,5 +59,12 @@ export const myStore = defineStore({
         this.salaryScope = arr;
       }
     },
+    // 获取标签和技能
+    async getLabelsSkill() {
+      const res = await labelsSkill();
+      if (res && res.data) {
+        this.sysSkillList = res.data;
+      }
+    }
   },
 });
