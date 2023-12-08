@@ -7,6 +7,17 @@ const store = myStore()
 const state = reactive({
   serviceValue: []
 })
+
+const props = defineProps({
+  serviceItem: {
+    type: String
+  }
+})
+if (props.serviceItem) {
+  // 转化为数组
+  let value = props.serviceItem.split(",")
+  state.serviceValue = value
+}
 </script>
 
 <template>
